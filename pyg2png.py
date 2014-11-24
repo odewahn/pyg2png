@@ -1,8 +1,5 @@
 # Example from 
 #    daniweb.com/software-development/python/code/377426/write-an-image-file-displaying-source-code
-# Options 
-
-
 from pygments import highlight
 from pygments.lexers import JavaLexer
 from pygments.lexers import ScalaLexer
@@ -51,9 +48,9 @@ if __name__ == "__main__":
          doc = pq(s)
          idx = 1
 
-         for ex in doc("div[data-type='example']"):
+         for ex in doc("pre"):
             out_fn = "%s_listing_%s.png" % (source_fn,idx)
             print("... Creating %s" % out_fn)
-            listing_type = ex[0].attrib["data-code-language"]
-            code2img(ex[0].text, listing_type, out_fn)
+            listing_type = ex.attrib["data-code-language"]
+            code2img(ex.text, listing_type, out_fn)
             idx += 1
