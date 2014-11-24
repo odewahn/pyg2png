@@ -5,10 +5,7 @@ from pygments.lexers import JavaLexer
 from pygments.lexers import ScalaLexer
 from pygments.lexers import PythonLexer
 from pygments.formatters import ImageFormatter
-
-
 from pyquery import PyQuery as pq
-
 import glob
 
 
@@ -41,16 +38,14 @@ if __name__ == "__main__":
    
    for fn in html_files:
       print("Processing file %s" % fn)
-      source_fn = fn.split(".")[0]
-    
       with file(fn) as f:
-         s = f.read()
-         doc = pq(s)
+         s = f.read()  # read in the file
+         doc = pq(s)   # parse using pyquery
          idx = 1
-
+         # process each <pre> code listing
          for ex in doc("pre"):
-            out_fn = "%s_listing_%s.png" % (source_fn,idx)
-            print("... Creating %s" % out_fn)
-            listing_type = ex.attrib["data-code-language"]
-            code2img(ex.text, listing_type, out_fn)
-            idx += 1
+            if ex.attrib.has_key("data-code-language"):
+               out_fn = "listing_%s_%s.png" % (fn.split(".")[0],idx)
+               print("... Creating %s" % out_fn)
+               code2img(ex.text, ex.attrib["data-code-language"] , out_fn)
+               idx += 1

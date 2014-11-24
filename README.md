@@ -1,5 +1,15 @@
 This repo converts code examples in HTMLBook files into PNGs.  The code listings are highlighted using the [pygments](http://pygments.org/) syntax highlighter.
 
+It will process each html file and write out a PNG files for every program listing.  The output files follow the convention `<filename>_listing_#.png`.  So, if you have a file called `ch01.html` with 3 listings, and `ch02.html` with 2 listings, you'll get 5 files, like this:
+	
+```
+ch01_listing_1.png
+ch01_listing_2.png
+ch01_listing_3.png
+ch02_listing_1.png
+ch02_listing_2.png
+```
+
 ## Requirements
 
 You need:
