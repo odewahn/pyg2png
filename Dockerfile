@@ -4,4 +4,8 @@ RUN pip install Pillow pygments
 RUN pip install pyquery
 RUN apt-get install -y ttf-bitstream-vera
 
-WORKDIR /usr/src
+ADD . /usr/src
+
+WORKDIR /usr/data
+
+CMD python /usr/src/pyg2png.py

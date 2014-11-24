@@ -12,11 +12,13 @@ Build the image:
 docker build -t odewahn/pyg2png .
 ```
 
+## To use it
+
 Then start the container:
 
 
 ```bash
-docker run -it -v $(pwd):/usr/src odewahn/pyg2png /bin/bash
+docker run -v $(pwd):/usr/data odewahn/pyg2png
 ```
 
 This will leave you at a bash prompt.  The `-v` option will map  your local directory on your host into the container, so commands you run here will save their files on your host machine. 

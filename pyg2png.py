@@ -43,6 +43,7 @@ if __name__ == "__main__":
    html_files = glob.glob("*.html")
    
    for fn in html_files:
+      print("Processing file %s" % fn)
       source_fn = fn.split(".")[0]
     
       with file(fn) as f:
@@ -52,6 +53,7 @@ if __name__ == "__main__":
 
          for ex in doc("div[data-type='example']"):
             out_fn = "%s_listing_%s.png" % (source_fn,idx)
+            print("... Creating %s" % out_fn)
             listing_type = ex[0].attrib["data-code-language"]
             code2img(ex[0].text, listing_type, out_fn)
             idx += 1
