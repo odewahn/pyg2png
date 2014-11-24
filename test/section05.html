@@ -1,0 +1,128 @@
+<section data-type="chapter">
+<h1>Typical Use Cases</h1>
+
+<p>Solving typical use cases with Spark in Scala, Java, Python.</p>
+
+<section data-type="sect1">
+<h1>5.01:&nbsp;Log File Analyzer in Java + Spark SQL</h1>
+
+<p dir="ltr"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Objective:</span><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;"> Understand the behavior of a Spark SQL app written in Java</span><br />
+<span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Difficulty:</span><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;"> (0.750)</span></p>
+
+<p dir="ltr">&nbsp;</p>
+
+<div><span style="color: rgb(0, 0, 0); font-family: Arial; font-size: 15px; font-weight: bold; white-space: pre-wrap; line-height: 1.15; letter-spacing: 0.01em;">5.01.1</span><br />
+<span style="letter-spacing: 0.01em; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Answer:</span><span style="letter-spacing: 0.01em; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;"> #4</span></div>
+&nbsp;
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;">Assuming an input data set of Apache-format log files, run with the following code:</span></p>
+
+<div data-type="example">
+<pre data-code-language="java" data-type="programlisting">
+List&lt;String&gt; foo = sqlContext
+&nbsp;&nbsp;&nbsp;.sql("SELECT ipAddress, COUNT(*) AS total FROM logs GROUP BY ipAddress HAVING total &gt; 10")
+&nbsp;&nbsp;&nbsp;.map(bar -&gt; bar.getString(0))
+&nbsp;&nbsp;&nbsp;.collect();
+System.out.println(String.format("%s", foo));
+</pre>
+</div>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;">&nbsp;</p>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;">What is the result?</span></p>
+
+<ol>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">the job fails</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">row IDs in the result set</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">total counts for web clients that have accessed the server more than 10 times</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="white-space: pre-wrap; letter-spacing: 0.01em; line-height: 1.3em;">IP addresses for web clients that have accessed the server more than 10 times</span></li>
+</ol>
+
+<p style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline;">&nbsp;</p>
+
+<p style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">5.01.2<br />
+Answer:</span><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;"> #4</span></p>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;">Assuming an input data set of Apache-format log files, run with the following code:</span></p>
+
+<div data-type="example">
+<pre id="listing1" data-code-language="java" data-type="programlisting">
+List&lt;String&gt; foo = sqlContext
+&nbsp;&nbsp;.sql("SELECT ipAddress, COUNT(*) AS total FROM logs GROUP BY ipAddress HAVING total &gt; 5")
+&nbsp;&nbsp;.map(bar -&gt; bar.getString(0))
+&nbsp;&nbsp;.collect();
+System.out.println(String.format("%s", foo));
+</pre>
+</div>
+&nbsp;
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="color: rgb(0, 0, 0); font-family: Arial; font-size: 15px; white-space: pre-wrap; line-height: 1.15; letter-spacing: 0.01em;">What is the result?</span></p>
+
+<ol dir="ltr">
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">the job fails unless Spark SQL is being run atop an Impala cluster</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">a list of the row IDs in the result set</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">the number of web clients that have accessed the server more than 5 times</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="white-space: pre-wrap; letter-spacing: 0.01em; line-height: 1.3em;">IP addresses for web clients that have accessed the server more than 5 times</span></li>
+</ol>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;">&nbsp;</p>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">5.01.3</span></p>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="letter-spacing: 0.01em; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Answer:</span><span style="letter-spacing: 0.01em; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;"> #4</span></p>
+&nbsp;
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;">Assuming an input data set of Apache-format log files, run with the following code:</span></p>
+
+<div data-type="example">
+<pre data-code-language="java" data-type="programlisting">
+List&lt;String&gt; foo = sqlContext
+&nbsp;&nbsp;&nbsp;.sql("SELECT ipAddress, COUNT(*) AS total FROM logs GROUP BY ipAddress HAVING total &gt; 11")
+&nbsp;&nbsp;&nbsp;.map(bar -&gt; bar.getString(0))
+&nbsp;&nbsp;&nbsp;.collect();
+System.out.println(String.format("%s", foo));
+</pre>
+</div>
+&nbsp;
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;">What is the result?</span></p>
+
+<ol dir="ltr">
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">the job fails unless Spark SQL is being run with a Hive Metastore</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">a list of the row IDs in the result set</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">the job always fails</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">IP addresses for web clients that have accessed the server more than 11 times</span></li>
+</ol>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;">&nbsp;</p>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">5.01.4</span><br />
+<span style="letter-spacing: 0.01em; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); font-weight: bold; vertical-align: baseline; white-space: pre-wrap;">Answer:</span><span style="letter-spacing: 0.01em; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;"> #4</span></p>
+&nbsp;
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;">Assuming an input data set of Apache-format log files, run with the following code:</span></p>
+
+<div data-type="example">
+<pre data-code-language="java" data-type="programlisting">
+List&lt;String&gt; foo = sqlContext
+&nbsp;&nbsp;&nbsp;.sql("SELECT ipAddress, COUNT(*) AS total FROM logs GROUP BY ipAddress HAVING total &gt; 9")
+&nbsp;&nbsp;&nbsp;.map(bar -&gt; bar.getString(0))
+&nbsp;&nbsp;&nbsp;.collect();
+System.out.println(String.format("%s", foo));
+</pre>
+</div>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;">&nbsp;</p>
+
+<p dir="ltr" style="line-height:1.15;margin-top:0pt;margin-bottom:0pt;"><span style="font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; white-space: pre-wrap;">What is the result?</span></p>
+
+<ol dir="ltr">
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">the job fails unless Spark SQL is configured with special Apache-format adapters</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">an array of integers</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">the number of web clients that have accessed the server more than 9 times</span></li>
+	<li style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline; line-height: 1.15; margin-top: 0pt; margin-bottom: 0pt;"><span style="vertical-align: baseline; white-space: pre-wrap;">IP addresses for web clients that have accessed the server more than 9 times</span></li>
+</ol>
+
+<p style="list-style-type: decimal; font-size: 15px; font-family: Arial; color: rgb(0, 0, 0); vertical-align: baseline;">&nbsp;</p>
+</section>
+</section>
